@@ -3,6 +3,7 @@ import os
 import random
 
 c = sqlite3.connect("terra.db")
+print(f"\033[1;37m") #Set text color to white
 #cursor = c.cursor()
 #
 #files = os.listdir("mondial_sqlite/sql/data")
@@ -18,6 +19,7 @@ c = sqlite3.connect("terra.db")
 #    cursor.executescript(sql_script)
 #
 #cursor.close()
+
 
 
 
@@ -68,10 +70,33 @@ def GameBundeslaenderAufzählen():
     return
 
 def HigherLowerCountry():
+    game = True
+    score = 0
     cursorHL = c.cursor()
-    cursorHL.execute("SELECT Name, Population FROM Countries")
+    cursorHL.execute("SELECT Name, Population FROM Country")
     countries = cursorHL.fetchall()
     firstCountry = countries[random.randint(0, len(countries))]
-    while True:
+    while game == True:
         secondCountry = countries[random.randint(0, len(countries))]
-        guess = input(f"Hat {secondCountry[0]} mehr Einwohner als {firstCountry[0]}?\n ")
+        if firstCountry[0] == secondCountry[0]:
+            break
+        guess = input(f"Hat {secondCountry[0]} mehr Einwohner als {firstCountry[0]}?\n1 steht für Ja 2 für Nein\n{firstCountry[0]} hat {firstCountry[1]} Einwohner\n")
+        if guess.lower() in ["high", "higher", "ja", "mehr", "1"] and secondCountry[1] >= firstCountry[1]:
+            score += 1
+            print(f"\nRichig {secondCountry[0]} mit {secondCountry[1]} Einwohnern hat mehr Einwohner als {firstCountry[0]} mit {secondCountry[1]} Einwohnern.\n\nAktueller Score:\033[1;31m {score}\n\033[1;37m")
+        elif guess.lower() in ["low", "lower", "nein", "weniger", "2"] and secondCountry[1] <= firstCountry[1]:
+            score += 1
+            print(f"\nRichig {secondCountry[0]} mit {secondCountry[1]} Einwohnern hat weniger Einwohner als {firstCountry[0]} mit {firstCountry[1]}.\n\nAktueller Score:\033[1;31m {score}\n\033[1;37m")
+        else:
+            print(f"\nDas ist leider Falsch. {secondCountry[0]} hat {secondCountry[1]} Einwohner und {firstCountry[0]} hat {firstCountry[1]}\nDein finaler Score war\033[1;31m {score}\n \033[1;37m")
+            game = False
+        firstCountry = secondCountry
+
+def HauptstädteDerWelt():
+    cursorHDW = c.cursor()
+    cursorHDW.execute("SELECT Name, Capital FROM Country")
+    cursorHDW.fetchall()
+    game = True
+
+    while game == True:
+        doSomething
