@@ -1,2 +1,2 @@
-# School
+# Geography Games
 school shit
