@@ -76,7 +76,7 @@ def HigherLowerCountry():
     cursorHL.execute("SELECT Name, Population FROM Country")
     countries = cursorHL.fetchall()
     firstCountry = countries[random.randint(0, len(countries))]
-    while game == True:
+    while game:
         secondCountry = countries[random.randint(0, len(countries))]
         if firstCountry[0] == secondCountry[0]:
             break
@@ -92,11 +92,26 @@ def HigherLowerCountry():
             game = False
         firstCountry = secondCountry
 
+
 def HauptstädteDerWelt():
     cursorHDW = c.cursor()
     cursorHDW.execute("SELECT Name, Capital FROM Country")
-    cursorHDW.fetchall()
-    game = True
+    countries = cursorHDW.fetchall()
+    games = int(input(f"Wie viele Runden möchtest du spielen?\n"))
+    counter = 0
+    score = 0
 
-    while game == True:
-        doSomething
+    while counter < games:
+        country = countries[random.randint(0, len(countries))]
+        guess = input(f"Runde {counter + 1}:\nWas ist die Hauptstadt von \033[1;31m{country[0]}\033[1;37m?\n")
+
+        if guess.lower() == country[1].lower():
+            score += 1
+            print(f"Das ist Richtig.\n\nAktueller Score: \033[1;31m{score}\033[1;37m\n")
+        else:
+            print(f"Leider Falsch.\nDie Hauptstadt von {country[0]} ist \033[1;32m{country[1]}\033[1;37m.\n\nAktueller Score: \033[1;31m{score}\033[1;37m\n")
+        counter += 1
+    
+    print(f"Du hast {counter} Runden gespielt.\nDein finaler Score war \033[1;31m{score}\033[1;37m.\n")
+
+GameBundeslaenderUndHauptstadt()
